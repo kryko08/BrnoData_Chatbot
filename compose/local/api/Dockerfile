@@ -17,4 +17,4 @@ RUN uv sync --frozen --no-dev
 # Copy source
 COPY api/ ./api/
 
-CMD ["uv", "run", "uvicorn", "api.app.main:app", "--host", "0.0.0.0", "--port", "8001", "--reload"]
+CMD ["uv", "run", "uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8001", "--reload"]

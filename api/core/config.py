@@ -1,5 +1,5 @@
 import os
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import BaseSettings
 
 class AppSettings(BaseSettings):
     postgres_user: str
@@ -7,6 +7,7 @@ class AppSettings(BaseSettings):
     postgres_db: str
     postgres_host: str
     postgres_port: int
+    secret_jwt_key: str
 
     @property
     def database_url(self) -> str:
@@ -16,4 +17,6 @@ class AppSettings(BaseSettings):
             f"@{self.postgres_host}:{self.postgres_port}"
             f"/{self.postgres_db}"
         )
+
+app_settings = AppSettings()
     

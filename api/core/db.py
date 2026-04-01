@@ -1,28 +1,19 @@
 from sqlalchemy.orm import DeclarativeBase
-from sqlalchemy.ext.asyncio import (
-    create_async_engine,
-    AsyncSession,
-    async_sessionmaker
-)
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 
-from .config import AppSettings
+from .config import app_settings
 
-settings = AppSettings()
 
-engine = create_async_engine(
-    settings.database_url,
-    echo=True
-)
+engine = create_async_engine(app_settings.database_url, echo=True)
 
 AsyncSessionLocal = async_sessionmaker(
-    engine,
-    class_=AsyncSession,
-    expire_on_commit=False
+    engine, class_=AsyncSession, expire_on_commit=False
 )
 
 
 class Base(DeclarativeBase):
     pass
+
 
 async def get_db():
     async with AsyncSessionLocal() as session:
@@ -32,4 +23,3 @@ async def get_db():
         except Exception:
             await session.rollback()
             raise
-
