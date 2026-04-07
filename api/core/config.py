@@ -1,6 +1,7 @@
 import os
 from pydantic_settings import BaseSettings
 
+
 class AppSettings(BaseSettings):
     postgres_user: str
     postgres_password: str
@@ -8,6 +9,8 @@ class AppSettings(BaseSettings):
     postgres_host: str
     postgres_port: int
     secret_jwt_key: str
+    app_name: str = "brno_llm"
+    adk_base_url: str
 
     @property
     def database_url(self) -> str:

@@ -12,7 +12,7 @@ import jwt
 from jwt.exceptions import InvalidTokenError
 
 from api.services.user_service import get_user_service, UserService
-from api.schemas.users import UserRegistrationSchema, Token
+from api.schemas.users import UserRegistrationSchema, Token, UserMeOut
 from api.core.config import app_settings
 
 HASH_ITERATIONS = 250_000
@@ -126,6 +126,6 @@ async def create_user(
 async def get_me(
     current_user_id: str = Depends(get_current_user_id_from_jwt),
     user_service: UserService = Depends(get_user_service),
-):
+) -> UserMeOut:
     user = await user_service.get_one(id=current_user_id)
-    return user
+    return UserMeOut(**user.__dict__)

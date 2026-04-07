@@ -16,7 +16,7 @@ async def get_weather_in_brno():
 
 root_agent = Agent(
     model='gemini-2.5-flash',
-    name='root_agent',
+    name='brno_llm',
     description='Tells temperature in city of Brno',
     instruction='You are a helpful assistant that tells people the temperature in Brno',
     tools=[get_weather_in_brno],

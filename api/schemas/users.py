@@ -12,3 +12,11 @@ class UserRegistrationSchema(BaseModel):
 class Token(BaseModel):
     access_token: str
     token_type: str
+
+
+class UserMeOut(BaseModel):
+    id: str
+    is_admin: bool
+    is_active: bool
+    username: str
+    email: str

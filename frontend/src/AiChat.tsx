@@ -1,106 +1,44 @@
 import { useState, useRef, useEffect } from "react";
+import { type Conversation } from "./types/chat";
 import "./css/chat.css"
+import ChatSidebar from "./components/ChatSidebar";
+import { apiService } from "./services/api";
+import { useChat } from "./hooks/UseChat";
+import { useUser } from "./hooks/UseUser";
 
 export default function AIChat() {
+    const {
+        conversations,
+        activeConversation,
+        messages,
+        input,
+        setInput,
+        loading,
+        loadingConversations,
+        bottomRef,
+        textareaRef,
+        startNewConversation,
+        sendMessage,
+        handleKeyDown,
+        selectConversation,
+    } = useChat();
 
-    /*
-    useEffect(() => {
-        bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-        },[messages, loading]
-    );
-
-    useEffect(() => {
-        const ta = textareaRef.current;
-        if (!ta) return;
-        ta.style.height = "auto";
-        ta.style.height = Math.min(ta.scrollHeight, 140) + "px";
-        }, [input]
-    );
-
-    */
-
-
-    /*
-    const userMsg = { role: "user", content: text };
-
-    updateSession(activeId, s => ({
-    ...s,
-    title: s.messages.length === 0 ? text.slice(0, 32) + (text.length > 32 ? "…" : "") : s.title,
-    messages: [...s.messages, userMsg],
-    }));
-
-    setInput("");
-    setLoading(true);
-
-    try {
-    const history = [...messages, userMsg];
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
-        max_tokens: 1000,
-        messages: history.map(m => ({ role: m.role, content: m.content })),
-        }),
-    });
-
-    const data = await response.json();
-    const aiText = data.content?.map(b => b.text || "").join("") || "No response.";
-
-    updateSession(activeId, s => ({
-        ...s,
-        messages: [...s.messages, userMsg, { role: "assistant", content: aiText }],
-    }));
-    } catch (err) {
-    updateSession(activeId, s => ({
-        ...s,
-        messages: [...s.messages, userMsg, { role: "assistant", content: "Error: " + err.message }],
-    }));
-    } finally {
-    setLoading(false);
-    }
-    */
-
-    
-
+    const { user, loading: loadingUser } = useUser();
 
     return (
     <>
     <div className="chat-root">
-    <aside className="sidebar">
-    <div className="sidebar-header">
-    <div className="app-title">Header</div>
-    </div>
 
-        <div className="history-list">
-            {/* {todaySessions.length > 0 && (
-            <>
-                <div className="history-section-label">Today</div>
-                {todaySessions.map(s => (
-                <div key={s.id} className={`history-item ${s.id === activeId ? "active" : ""}`} onClick={() => setActiveId(s.id)}>
-                    {s.title}
-                </div>
-                ))}
-            </>
-            )}
-            {olderSessions.length > 0 && (
-            <>
-                <div className="history-section-label">Earlier</div>
-                {olderSessions.map(s => (
-                <div key={s.id} className={`history-item ${s.id === activeId ? "active" : ""}`} onClick={() => setActiveId(s.id)}>
-                    {s.title}
-                </div>
-                ))}
-            </>
-            )} */}
-        </div>
-        </aside>
-
-        <main className="main">
-            <div className="main-header">
-                <div className="header-dot" />
-                {"New Chat"}
-            </div>
+        
+            <ChatSidebar
+                conversations={conversations}
+                activeId={activeConversation?.id ?? null}
+                loadingConversations={loadingConversations}
+                user={user}
+                loadingUser={loadingUser}
+                onSelect={selectConversation}
+                onNewChat={startNewConversation}
+            />
 
             <div className="messages-area">
                 {/* {messages.length === 0 && !loading ? (
@@ -141,7 +79,6 @@ export default function AIChat() {
                 </button>
                 </div>
             </div>
-        </main>
     </div>
     </>
 

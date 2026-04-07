@@ -6,6 +6,7 @@ from fastapi.security import OAuth2PasswordBearer
 from api.core.config import app_settings
 from api.routers.sessions import SessionRouter
 from api.routers.auth import AuthRouter
+from api.routers.chat import ChatRouter
 
 
 app = FastAPI()
@@ -21,3 +22,4 @@ async def info():
 
 app.include_router(SessionRouter)
 app.include_router(AuthRouter)
+app.include_router(ChatRouter)
