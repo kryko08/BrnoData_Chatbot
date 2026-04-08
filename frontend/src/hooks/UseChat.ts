@@ -31,22 +31,24 @@ export function useChat() {
     
     // Load messages when active conversation changes
     useEffect(() => {
-        async function load() {
-            try {
-                const data = await apiService.get
-            }
-        }
-
         if (!activeConversation) {
             setMessages([]);
             return;
         }
-        setLoading(true);
-        apiService
-            .getMessages(activeConversation.id)
-            .then(setMessages)
-            .catch(err => setError(err.message))
-            .finally(() => setLoading(false));
+        const conversationId = activeConversation.id;
+
+        async function load() {
+            setLoading(true)
+            try {
+                const data = await apiService.getConversationMessages(conversationId)
+                setMessages(data);
+            } catch (err: any) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        }
+        load()
     }, [activeConversation]);
     /*
     // Scroll to bottom on new messages
@@ -115,12 +117,12 @@ export function useChat() {
             sendMessage();
         }
     }
+    */
 
     function selectConversation(conversation: Conversation) {
         if (conversation.id === activeConversation?.id) return;
         setActiveConversation(conversation);
     }
-    */
     return {
         conversations,
         activeConversation,
@@ -135,6 +137,6 @@ export function useChat() {
         startNewConversation: () => console.log("test"),
         sendMessage: () => console.log("test"),
         handleKeyDown: () => console.log("test"),
-        selectConversation: () => console.log("test"),
+        selectConversation: selectConversation,
     };
 }

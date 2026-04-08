@@ -12,6 +12,8 @@ export interface Conversation {
 }
 
 export interface Message {
-    role: "user" | "assistant";
-    content: string;
+    id: string;
+    role: "user" | "model";
+    text: string;
+    timestamp: string;
 }

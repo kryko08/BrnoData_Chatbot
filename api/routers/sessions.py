@@ -5,7 +5,7 @@ import httpx
 
 from api.services.session_service import get_session_service, SessionService
 from api.routers.auth import get_current_user_id_from_jwt
-from api.schemas.sessions import NewSessionOut, SessionOut, SessionEvents
+from api.schemas.sessions import NewSessionOut, SessionOut, SessionEvent
 from api.core.config import app_settings
 
 SessionRouter = APIRouter(prefix="/sessions")
@@ -30,9 +30,16 @@ async def get_session_events(
     session_id: str,
     session_service: SessionService = Depends(get_session_service),
     current_user_id: str = Depends(get_current_user_id_from_jwt),
-):
+) -> list[SessionEvent]:
     events = await session_service.get_session_events(session_id, current_user_id)
-    return [SessionEvents.model_validate(e) for e in events]
+
+    result = []
+    for e in events:
+        parsed = SessionEvent.from_event(e.event_data)
+        if parsed:
+            result.append(parsed)
+
+    return result
 
 
 @SessionRouter.get("/new")

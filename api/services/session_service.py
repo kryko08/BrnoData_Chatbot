@@ -1,5 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func
+from sqlalchemy import select, cast
+from sqlalchemy.dialects.postgresql import JSONB
 from fastapi import Depends
 
 from api.services.service import CRUDService

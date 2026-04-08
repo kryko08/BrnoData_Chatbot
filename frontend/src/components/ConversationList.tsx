@@ -15,7 +15,7 @@ export default function ConversationList({ conversations, activeId, loading, onS
     if (conversations.length === 0) {
         return <div className="history-empty">No conversations yet.</div>;
     }
-    console.log(conversations)
+
     const now = Date.now();
     const todayItems = conversations.filter(
         c => now - new Date(c.update_time).getTime() < 86400000
