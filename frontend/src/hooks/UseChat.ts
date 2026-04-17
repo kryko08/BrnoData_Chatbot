@@ -41,7 +41,7 @@ export function useChat() {
             setLoading(true)
             try {
                 const data = await apiService.getConversationMessages(conversationId)
-                setMessages(data);
+                setMessages(data.items);
             } catch (err: any) {
                 setError(err.message);
             } finally {

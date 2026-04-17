@@ -1,6 +1,7 @@
 from uuid import uuid4
 
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi_pagination import Params, Page
 import httpx
 
 from api.services.session_service import get_session_service, SessionService
@@ -28,18 +29,12 @@ async def get_my_sessions(
 @SessionRouter.get("/{session_id}/events")
 async def get_session_events(
     session_id: str,
+    params: Params = Depends(),
     session_service: SessionService = Depends(get_session_service),
     current_user_id: str = Depends(get_current_user_id_from_jwt),
-) -> list[SessionEvent]:
-    events = await session_service.get_session_events(session_id, current_user_id)
-
-    result = []
-    for e in events:
-        parsed = SessionEvent.from_event(e.event_data)
-        if parsed:
-            result.append(parsed)
-
-    return result
+) -> Page[SessionEvent]:
+    events = await session_service.get_paginated_session_events(params, session_id, current_user_id)
+    return events
 
 
 @SessionRouter.get("/new")

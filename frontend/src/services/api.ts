@@ -1,4 +1,4 @@
-import { type UserMe, type Conversation, type Message } from "../types/chat";
+import { type UserMe, type Conversation, type Message, type Page } from "../types/chat";
 
 const BASE_URL = "/api"
 
@@ -43,13 +43,13 @@ export const apiService = {
         return handleResponse<Conversation[]>(res);
     },
 
-    async getConversationMessages(session_id: string): Promise<Message[]> {
-        const res = await fetch(`${BASE_URL}/sessions/${session_id}/events`, {
+    async getConversationMessages(session_id: string, page = 1, size = 10): Promise<Page<Message>> {
+        const res = await fetch(`${BASE_URL}/sessions/${session_id}/events?page=${page}&size=${size}`, {
             method: "GET",
             headers: authHeaders()
         });
-        
-        return handleResponse<Message[]>(res);
+
+        return handleResponse<Page<Message>>(res);
     }
 
 }

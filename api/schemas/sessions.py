@@ -28,7 +28,12 @@ class SessionEvent(BaseModel):
         # Find the first text part, skip if none exists
         parts = content.get("parts", [])
         text = next(
-            (p["text"] for p in parts if "text" in p and not p.get("thought_signature")),
+            # Sure its definitely better to filter out the events on DB level, but could not find a way in SQL ALchemy :/
+            (
+                p["text"]
+                for p in parts
+                if "text" in p and not p.get("thought_signature")
+            ),
             None,
         )
 

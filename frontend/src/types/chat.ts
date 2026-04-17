@@ -6,6 +6,14 @@ export interface UserMe {
     email: string
 }
 
+export interface Page<T> {
+    items: T[];
+    total: number;
+    page: number;
+    size: number;
+    pages: number;
+}
+
 export interface Conversation {
     id: string;
     update_time: string;

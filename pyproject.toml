@@ -9,6 +9,7 @@ dependencies = [
     "asyncpg>=0.31.0",
     "dotenv>=0.9.9",
     "fastapi",
+    "fastapi-pagination>=0.15.12",
     "fastapi[standard]",
     "google-adk",
     "httpx>=0.28.1",
