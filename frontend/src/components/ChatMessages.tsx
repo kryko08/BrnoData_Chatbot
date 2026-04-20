@@ -1,8 +1,26 @@
 import { type Message } from "../types/chat"
+import "../css/chat.css"
 
 interface Props {
     messages: Message[]
     loading: boolean
+}
+
+function ChatMessage({message}: {message: Message}) {
+    const isUser = message.role !== "model";
+    return (
+        <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
+            <div
+                className={`w-4/5 rounded-b-lg p-3 ${
+                isUser ? "bg-yellow-600 rounded-tl-lg" : "bg-gray-300 rounded-tr-lg"
+                }`}
+            >
+                <div className="text-sm">
+                {message.text}
+                </div>
+            </div>
+        </div>
+  );
 }
 
 export default function ChatMessages({messages, loading}: Props) {
@@ -10,17 +28,14 @@ export default function ChatMessages({messages, loading}: Props) {
 
     return (
         <>
-            <div className="messages-area">
+            <div className="mx-4 my-5 flex flex-col gap-4 overflow-auto">
                 {messages.length === 0 && !loading ? (
                 <div className="empty-state">
                     <div className="empty-title">How can I help?</div>
                 </div>
                 ) : (
-                messages.map((m, i) => (
-                    <div key={i} className={`message-row ${m.role}`}>
-                    <div className="message-label">{m.role === "user" ? "user" : "model"}</div>
-                    <div className={`bubble ${m.role}`}></div>
-                    </div>
+                messages.map((m) => (
+                    <ChatMessage message={m}/>
                 ))
                 )}
 
@@ -33,7 +48,7 @@ export default function ChatMessages({messages, loading}: Props) {
                 </div>
                 )}
             </div>
-
+            {/*
             <div className="input-area">
                 <div className="input-wrap">
                 <textarea
@@ -49,6 +64,7 @@ export default function ChatMessages({messages, loading}: Props) {
                 </button>
                 </div>
             </div>
+            */}
         </>
     )
 }

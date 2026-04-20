@@ -2,6 +2,7 @@
 import { type Conversation, type UserMe } from "../types/chat"
 import ConversationList from "./ConversationList";
 import UserInfo from "./UserInfo";
+import newChatIcon from "../images/svg/chat-plus-light.svg"
 
 interface Props {
     conversations: Conversation[];
@@ -24,15 +25,12 @@ export default function ChatSiderbar({
     onNewChat,
 }: Props){
     return (
-        <aside className="sidebar">
-            <div className="sidebar-header">
-                <div className="app-title">Brno Data Chatbot</div>
+        <aside className="hidden md:flex md:w-1/3 lg:w-80 shrink-0 flex-col bg-blue-400">
+            <div className="pt-8 pb-5 text-center">
+                <div className="text-lg font-bold uppercase">Brno Data Chatbot</div>
             </div>
 
-            <button className="new-chat-btn" onClick={onNewChat}>
-                <span className="plus">+</span> New chat
-            </button>
-
+            
             <ConversationList
                 conversations={conversations}
                 activeId={activeId}
@@ -40,7 +38,10 @@ export default function ChatSiderbar({
                 onSelect={onSelect}
             />
 
-            <UserInfo user={user} loading={loadingUser} />
+            <div className="flex justify-between items-center">
+                <UserInfo user={user} loading={loadingUser} />
+                <img src={newChatIcon} alt="icon" className="w-5 h-5" />
+            </div>
         </aside>
     )
 }

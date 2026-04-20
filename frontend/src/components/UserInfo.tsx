@@ -15,18 +15,18 @@ export default function UserInfo({ user, loading }: Props) {
     }
 
     return (
-        <div className="user-info">
-            <div className="user-details">
+        <div className="">
+            <div className="">
                 {loading ? (
-                    <div className="user-loading">Loading…</div>
+                    <div className="">Loading…</div>
                 ) : user ? (
                     <>
-                        <div className="user-name">{user.username}</div>
-                        <div className="user-email">{user.email}</div>
+                        <div className="">{user.username}</div>
+                        <div className="">{user.email}</div>
                     </>
                 ) : null}
             </div>
-            <button className="logout-btn" onClick={handleLogout}>
+            <button className="" onClick={handleLogout}>
                 Sign out
             </button>
         </div>

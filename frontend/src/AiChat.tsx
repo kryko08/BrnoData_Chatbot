@@ -1,8 +1,5 @@
-import { useState, useRef, useEffect } from "react";
-import { type Conversation } from "./types/chat";
 import "./css/chat.css"
 import ChatSidebar from "./components/ChatSidebar";
-import { apiService } from "./services/api";
 import { useChat } from "./hooks/UseChat";
 import { useUser } from "./hooks/UseUser";
 import ChatMessages from "./components/ChatMessages";
@@ -28,7 +25,7 @@ export default function AIChat() {
 
     return (
     <>
-    <div className="chat-root">
+    <div className="flex h-screen w-full overflow-hidden font-mono bg-blue-100">
 
         
             <ChatSidebar

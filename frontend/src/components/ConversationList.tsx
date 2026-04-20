@@ -25,14 +25,14 @@ export default function ConversationList({ conversations, activeId, loading, onS
     );
 
     return (
-        <div className="history-list">
+        <div className="px-2 flex-1">
             {todayItems.length > 0 && (
                 <>
-                    <div className="history-section-label">Today</div>
+                    <div className="">Today</div>
                     {todayItems.map(c => (
                         <div
                             key={c.id}
-                            className={`history-item ${c.id === activeId ? "active" : ""}`}
+                            className={` ${c.id === activeId ? "active" : ""}`}
                             onClick={() => onSelect(c)}
                         >
                             {c.id}
@@ -42,13 +42,12 @@ export default function ConversationList({ conversations, activeId, loading, onS
             )}
             {olderItems.length > 0 && (
                 <>
-                    <div className="history-section-label">Earlier</div>
+                    <div className="px-2 font-semibold text-sm uppercase">Earlier</div>
                     {olderItems.map(c => (
                         <div
                             key={c.id}
-                            className={`history-item ${c.id === activeId ? "active" : ""}`}
                             onClick={() => onSelect(c)}
-                        >
+                            className={`overflow-hidden truncate py-1 px-2 text-xs rounded-xl cursor-pointer hover:bg-blue-500 ${c.id === activeId ? "bg-blue-500" : ""}`}>
                             {c.id}
                         </div>
                     ))}

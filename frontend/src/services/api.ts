@@ -43,13 +43,13 @@ export const apiService = {
         return handleResponse<Conversation[]>(res);
     },
 
-    async getConversationMessages(session_id: string, page = 1, size = 10): Promise<Page<Message>> {
-        const res = await fetch(`${BASE_URL}/sessions/${session_id}/events?page=${page}&size=${size}`, {
+    async getConversationMessages(session_id: string): Promise<Message[]> {
+        const res = await fetch(`${BASE_URL}/sessions/${session_id}/events`, {
             method: "GET",
             headers: authHeaders()
         });
 
-        return handleResponse<Page<Message>>(res);
+        return handleResponse<Message[]>(res);
     }
 
 }

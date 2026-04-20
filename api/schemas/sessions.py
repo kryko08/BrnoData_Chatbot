@@ -2,6 +2,8 @@ from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict, Json
 
+from api.models import Events
+
 
 class SessionOut(BaseModel):
     update_time: datetime
@@ -14,37 +16,32 @@ class SessionEvent(BaseModel):
     id: str
     role: str
     text: str
-    timestamp: float
+    timestamp: datetime
 
     @classmethod
-    def from_event(cls, event: dict) -> SessionEvent | None:
-        """Return None if this event is not a displayable text message."""
-        content = event.get("content", {})
+    def from_orm_event(cls, event: Events) -> SessionEvent | None:
+        data = event.event_data or {}
+        content = data.get("content", {})
         role = content.get("role")
 
         if role not in ("user", "model"):
             return None
 
-        # Find the first text part, skip if none exists
         parts = content.get("parts", [])
         text = next(
-            # Sure its definitely better to filter out the events on DB level, but could not find a way in SQL ALchemy :/
             (
                 p["text"]
                 for p in parts
-                if "text" in p and not p.get("thought_signature")
+                if "text" in p
             ),
             None,
         )
 
-        if not text:
-            return None
-
         return cls(
-            id=event["id"],
+            id=event.id,
             role=role,
             text=text,
-            timestamp=event["timestamp"],
+            timestamp=event.timestamp,
         )
 
 

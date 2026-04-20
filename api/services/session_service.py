@@ -1,8 +1,9 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import select, cast, func
 from fastapi import Depends
 from fastapi_pagination import Page, Params
 from fastapi_pagination.ext.sqlalchemy import paginate
+from sqlalchemy.dialects.postgresql import JSONPATH
 
 from api.schemas.sessions import SessionEvent
 from api.services.service import CRUDService
@@ -19,6 +20,10 @@ class SessionService(CRUDService[Sessions]):
             .where(
                 Events.user_id == user_id,
                 Events.session_id == session_id,
+                func.jsonb_path_exists(
+                    Events.event_data,
+                    cast('$.content.parts[*] ? (@.text != null)', JSONPATH)
+                )
             )
             .order_by(Events.timestamp)
         )

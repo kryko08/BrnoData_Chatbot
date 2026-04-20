@@ -29,12 +29,11 @@ async def get_my_sessions(
 @SessionRouter.get("/{session_id}/events")
 async def get_session_events(
     session_id: str,
-    params: Params = Depends(),
     session_service: SessionService = Depends(get_session_service),
     current_user_id: str = Depends(get_current_user_id_from_jwt),
-) -> Page[SessionEvent]:
-    events = await session_service.get_paginated_session_events(params, session_id, current_user_id)
-    return events
+):
+    events = await session_service.get_session_events(session_id, current_user_id)
+    return [SessionEvent.from_orm_event(e) for e in events]
 
 
 @SessionRouter.get("/new")
